@@ -87,9 +87,8 @@ public class BubbletCanvas extends Canvas
         instructionForm = new Form("Instructions");
         instructStringItem = new StringItem(
                 "Bubblet Instructions",
-                "Move the cursor up (2 - key), down (8 - key), left (4 - key) and right (6 - key) " +
-                "to navigate between the cells. Search for contiguous cells (two or more) " +
-                "with the same color and press the fire key (5 - key) to dissolve them. " +
+                "Search for contiguous cells (two or more) " +
+                "with the same color and touch them to dissolve them. " +
                 "Try to dissolve as many fields as possible.");
         instructionForm.append(instructStringItem);
         instructionForm.addCommand(backCmd);
@@ -111,7 +110,7 @@ public class BubbletCanvas extends Canvas
                 "This game was originally written by Juan Antonio Agudo at http://keyboardsamurais.de \n" +
                 "It's licensed under GPLv2 licence \n"+
                 "Ported to S40 by: Antti Pohjola\n"+
-                "You can get the source code from \n\n" +
+                "You can get the source code from: https://github.com/Summeli/Bubblet \n\n" +
                 "- it was strongly inspired by the original Bubblet at http://oopdreams.com " +
                 "and its Windows port by Daniel Klein at http://www.hobsoft.de. " +
                 "Special thanks go to M. Serhat Cinar at http://graviton.de for his kind advice.");

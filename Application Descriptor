@@ -1,6 +1,8 @@
-MIDlet-Jar-URL: Bubblet.jar
-MIDlet-Name: Bubblet
-MIDlet-Vendor: Antti Pohjola
 MIDlet-Version: 1.0.0
+MIDlet-Vendor: Antti Pohjola
+MIDlet-Jar-URL: Bubblet.jar
+Nokia-MIDlet-App-Orientation: portrait
 MicroEdition-Configuration: CLDC-1.0
+MIDlet-1: Bubblet,/icon.png,Bubblet
 MicroEdition-Profile: MIDP-2.1
+MIDlet-Name: Bubblet
