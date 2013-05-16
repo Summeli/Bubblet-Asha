@@ -306,6 +306,15 @@ public class BubbletCanvas extends Canvas
     	cursorIndexPosY = y / cellHeight;
     	cursorIndexPosX = x / cellWidth;
 
+    	if(cursorIndexPosY >=fieldWidth){
+    		cursorIndexPosY = fieldWidth-1;
+    	}
+    	
+       	if(cursorIndexPosX >=fieldHeight){
+       		cursorIndexPosX = fieldHeight-1;
+    	}
+
+        
         int selectedColor = field[cursorIndexPosY][cursorIndexPosX];
         // Is it white? then do nothing at all
         if (selectedColor != WHITE) {
