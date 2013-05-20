@@ -20,6 +20,13 @@ public class Bubblet extends MIDlet {
      * 
      */
     public Bubblet() {
+    	String keyboardType = System.getProperty("com.nokia.keyboard.type");
+    	if (keyboardType.equals("OnekeyBack") || keyboardType.equals("None")) {
+    	    // Series 40 full touch or Nokia Asha software platform detected
+    	    // Your code here
+    	    com.nokia.mid.ui.VirtualKeyboard.hideOpenKeypadCommand(true);
+    	}
+    	
         canvas = new BubbletCanvas(this,10,7);
     }
 
