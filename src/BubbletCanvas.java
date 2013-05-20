@@ -250,9 +250,9 @@ public class BubbletCanvas extends Canvas
             }
             affectedSlices.removeAllElements();
         }
-
+/*
         if (!gameFinished)
-	    drawCrosshairs(g);
+        	drawCrosshairs(g);*/
     }
 
     private void drawWholeBoard(Graphics g){
