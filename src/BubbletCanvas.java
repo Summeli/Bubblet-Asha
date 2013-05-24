@@ -73,8 +73,9 @@ public class BubbletCanvas extends Canvas
     
     private ObserverManager observerManager;
     private HighScoreManager highScore;
-
-    public BubbletCanvas(MIDlet pMidlet, int pFieldWidth, int pFieldHeight) {
+    
+    private int platofrm = 0; /* 1 = S40 fullTouch, 2 = ASHA 1.0*/
+    public BubbletCanvas(MIDlet pMidlet) {
         highScore = HighScoreManager.getInstance(5,false,"bubblet");
         observerManager = new ObserverManager();
         observerManager.addObserver(highScore);
@@ -160,9 +161,19 @@ public class BubbletCanvas extends Canvas
         addCommand(exitCmd);
         setCommandListener(this);
 
-        fieldWidth = pFieldWidth;
-        fieldHeight = pFieldHeight;
-        field = new int[pFieldWidth][pFieldHeight];
+        int width = getWidth();
+        int height = getHeight();
+        if( width == 240 && height == 342){
+            fieldWidth = 17;
+            fieldHeight = 12;
+            platofrm = 1;
+        } else {
+        	fieldWidth = 13;
+        	fieldHeight = 12;
+        	platofrm = 2;
+        }
+        
+        field = new int[fieldWidth][fieldHeight];
     }
 
 
@@ -184,11 +195,12 @@ public class BubbletCanvas extends Canvas
     protected void paint(Graphics g) {
         if (initialDraw) {
             // initialize sizes of basic screen elements (only once)
-	    screenWidth = g.getClipHeight();
+        	screenWidth = g.getClipHeight();
             screenHeight = g.getClipWidth();
-            cellWidth = screenWidth / fieldWidth;
-            cellHeight = screenHeight / fieldHeight;
 
+            cellWidth = 20;
+            cellHeight = 20;
+        
             // Draw blank screen
             g.setColor(255, 255, 255);
             g.fillRect(0, 0, screenWidth, screenHeight);

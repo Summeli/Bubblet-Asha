@@ -26,8 +26,7 @@ public class Bubblet extends MIDlet {
     	    // Your code here
     	    com.nokia.mid.ui.VirtualKeyboard.hideOpenKeypadCommand(true);
     	}
-    	
-        canvas = new BubbletCanvas(this,10,7);
+        canvas = new BubbletCanvas(this);
     }
 
     protected void startApp() throws MIDletStateChangeException {
