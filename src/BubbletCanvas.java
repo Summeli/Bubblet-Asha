@@ -107,11 +107,11 @@ public class BubbletCanvas extends Canvas
         // Prepare the About Screen
         aboutForm = new Form("About");
         aboutStringItem = new StringItem(
-                "About Bubblet",
-                "This game was originally written by Juan Antonio Agudo at http://keyboardsamurais.de \n" +
-                "It's licensed under GPLv2 licence \n"+
-                "Ported to S40 by: Antti Pohjola\n"+
+                "Bubblet 1.0.2",
+                "Bubblet 1.0.2 for S40 by: Antti Pohjola\n"+
+                "Bubblet is licenced under GPLv2 licence \n"+
                 "You can get the source code from: https://github.com/Summeli/Bubblet \n\n" +
+                "This game was originally written by Juan Antonio Agudo at http://keyboardsamurais.de \n" +
                 "- it was strongly inspired by the original Bubblet at http://oopdreams.com " +
                 "and its Windows port by Daniel Klein at http://www.hobsoft.de. " +
                 "Special thanks go to M. Serhat Cinar at http://graviton.de for his kind advice.");
@@ -149,7 +149,7 @@ public class BubbletCanvas extends Canvas
         bubblet = pMidlet;
 
         startCmd = new Command("Start", Command.SCREEN, 1);
-        instructCmd = new Command("Instructions", Command.SCREEN, 2);
+        instructCmd = new Command("Help", Command.SCREEN, 2);
         aboutCmd = new Command("About", Command.SCREEN, 3);
         highScoreCmd = new Command("Highscore", Command.SCREEN, 4);
         exitCmd = new Command("Exit", Command.SCREEN, 5);
