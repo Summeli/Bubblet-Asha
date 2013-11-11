@@ -7,6 +7,8 @@ import highscore.IHighScoreSubject;
 import java.util.Random;
 import java.util.Vector;
 
+import javax.microedition.content.Invocation;
+import javax.microedition.content.Registry;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -62,7 +64,8 @@ public class BubbletCanvas extends Canvas
     private Command backCmd;
     private Command aboutCmd;
     private Command highScoreCmd;
-    
+    private Command shareHighScoreCmd;
+
     private Form instructionForm;
     private Form aboutForm;
     private Form highScoreForm;
@@ -73,9 +76,11 @@ public class BubbletCanvas extends Canvas
     
     private ObserverManager observerManager;
     private HighScoreManager highScore;
+    private Registry registry; 
     
-    private int platofrm = 0; /* 1 = S40 fullTouch, 2 = ASHA 1.0*/
-    public BubbletCanvas(MIDlet pMidlet) {
+    private int platform = 2; /* 1 = S40 fullTouch, 2 = ASHA 1.0*/
+    
+    public BubbletCanvas(final MIDlet pMidlet) {
         highScore = HighScoreManager.getInstance(5,false,"bubblet");
         observerManager = new ObserverManager();
         observerManager.addObserver(highScore);
@@ -107,8 +112,8 @@ public class BubbletCanvas extends Canvas
         // Prepare the About Screen
         aboutForm = new Form("About");
         aboutStringItem = new StringItem(
-                "Bubblet 1.0.2",
-                "Bubblet 1.0.2 for S40 by: Antti Pohjola\n"+
+                "Bubblet 1.0.4",
+                "Bubblet 1.0.4 for Nokia Asha by: Antti Pohjola\n"+
                 "Bubblet is licenced under GPLv2 licence \n"+
                 "You can get the source code from: https://github.com/Summeli/Bubblet \n\n" +
                 "This game was originally written by Juan Antonio Agudo at http://keyboardsamurais.de \n" +
@@ -129,12 +134,33 @@ public class BubbletCanvas extends Canvas
         });
 
         // prepare HighScore Screen
-
         highScoreForm= new Form("HighScore");
         highScoreForm.addCommand(backCmd);
+        shareHighScoreCmd = new Command("Share", Command.ITEM, 2);
+        if(platform == 2)
+        	highScoreForm.addCommand(shareHighScoreCmd);
         highScoreForm.setCommandListener(new CommandListener() {
             public void commandAction(Command c, Displayable s) {
-                if (c == backCmd) {
+                if (c == backCmd || c.getCommandType() == Command.BACK) {
+		            score = 0;
+		            gameFinished = false;
+		            initialDraw = true;
+		            repaint();
+		            ((Bubblet) bubblet).getDisplay().setCurrent(bubbletCanvas);
+                }if( c== shareHighScoreCmd){
+                	registry = Registry.getRegistry(pMidlet.getClass().getName());
+                	Invocation invocation = new Invocation(null, "text/plain", "com.nokia.share");
+                	invocation.setAction("share");
+                    String[] args = new String[1]; // Only the first element is required and used
+                    args[0] = new String("text=my Bubblet highscore is "+highScore.getHighScore()); // Content to share
+                	invocation.setArgs(args);
+                	invocation.setResponseRequired(false);
+                	try {
+						registry.invoke(invocation);
+					} catch (Exception e) {
+						String foo = "bar";
+					}
+                	//return game into initial state
 		            score = 0;
 		            gameFinished = false;
 		            initialDraw = true;
@@ -158,7 +184,8 @@ public class BubbletCanvas extends Canvas
         addCommand(instructCmd);
         addCommand(aboutCmd);
         addCommand(highScoreCmd);
-        addCommand(exitCmd);
+        if(platform == 1)
+        	addCommand(exitCmd);
         setCommandListener(this);
 
         int width = getWidth();
@@ -166,11 +193,11 @@ public class BubbletCanvas extends Canvas
         if( width == 240 && height == 342){
             fieldWidth = 17;
             fieldHeight = 12;
-            platofrm = 1;
+            platform = 1;
         } else {
         	fieldWidth = 13;
         	fieldHeight = 12;
-        	platofrm = 2;
+        	platform = 2;
         }
         
         field = new int[fieldWidth][fieldHeight];
@@ -394,8 +421,8 @@ public class BubbletCanvas extends Canvas
 
             // move empty slices to the left corner
             
-            for (int i = 0; i < fieldWidth - 1; i++) {
-                if (field[i][fieldHeight - 1] == WHITE) {
+            for (int i = 0; i < fieldWidth; i++) {
+                if (field[i][fieldHeight -1] == WHITE) {
                     moveSliceLeft(i);
                     break;
                 }
@@ -543,11 +570,11 @@ public class BubbletCanvas extends Canvas
         if (x > fieldWidth) {
             return;
         }
-        Vector storage = new Vector(10);
+        Vector storage = new Vector(fieldHeight);
         Vector slice;
 
         for (int i = x; i < fieldHeight; i++) {
-            slice = new Vector(10);
+            slice = new Vector(fieldHeight);
             for (int j = 0; j < fieldWidth; j++) {
                 int tmp = field[j][i];
                 if (tmp != WHITE) {
@@ -774,7 +801,7 @@ public class BubbletCanvas extends Canvas
         } else if (c == aboutCmd) {
             ((Bubblet) bubblet).getDisplay().setCurrent(aboutForm);
         }else if( c == highScoreCmd){
-            highScoreStringItem = new StringItem("Your current score is: "+score+" Highscores: ",highScore.getSimpleList());
+            highScoreStringItem = new StringItem("Your current score is: "+score+"\n Highscores: ",highScore.getSimpleList());
 			if(highScoreForm.size() == 0){
 				highScoreForm.append(highScoreStringItem);
 			}else{

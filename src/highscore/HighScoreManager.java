@@ -59,6 +59,19 @@ public class HighScoreManager implements Observer {
         return scoreList.getList();
     }
     
+    public String getHighScore(){
+    	 Vector list = scoreList.getList();
+    	 StringBuffer sb = new StringBuffer();
+    	 Score s =null;
+    	 if(list != null && list.size() > 0)
+    		 s = (Score) list.firstElement();
+    	 if(s!=null)
+    		 sb.append(s.getScore());
+    	 else
+    		 sb.append("0");
+    	 return sb.toString();
+    }
+    
     public String getSimpleList() {
         Vector list = scoreList.getList();
         StringBuffer sb = new StringBuffer();
