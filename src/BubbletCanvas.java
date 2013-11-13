@@ -79,8 +79,13 @@ public class BubbletCanvas extends Canvas
     private Registry registry; 
     
     private int platform = 2; /* 1 = S40 fullTouch, 2 = ASHA 1.0*/
-    
+    private boolean sharingEnabled = false;
     public BubbletCanvas(final MIDlet pMidlet) {
+		
+    	String myOS = System.getProperty("microedition.platform");
+		if(myOS.indexOf("Nokia_Asha_1_1") > 0)
+			sharingEnabled = true;
+		
         highScore = HighScoreManager.getInstance(5,false,"bubblet");
         observerManager = new ObserverManager();
         observerManager.addObserver(highScore);
@@ -89,7 +94,10 @@ public class BubbletCanvas extends Canvas
         final Displayable bubbletCanvas = this;
 
         // Prepare Instructions Screen
-        backCmd = new Command("Back", Command.SCREEN, 1);
+        if(platform == 2)
+            backCmd = new Command("Back", Command.BACK, 1);
+        else
+        	backCmd = new Command("Back", Command.SCREEN, 1);
         instructionForm = new Form("Instructions");
         instructStringItem = new StringItem(
                 "Bubblet Instructions",
@@ -112,8 +120,8 @@ public class BubbletCanvas extends Canvas
         // Prepare the About Screen
         aboutForm = new Form("About");
         aboutStringItem = new StringItem(
-                "Bubblet 1.0.4",
-                "Bubblet 1.0.4 for Nokia Asha by: Antti Pohjola\n"+
+                "Bubblet 1.0.5",
+                "Bubblet 1.0.5 for Nokia Asha by: Antti Pohjola\n"+
                 "Bubblet is licenced under GPLv2 licence \n"+
                 "You can get the source code from: https://github.com/Summeli/Bubblet \n\n" +
                 "This game was originally written by Juan Antonio Agudo at http://keyboardsamurais.de \n" +
@@ -137,7 +145,7 @@ public class BubbletCanvas extends Canvas
         highScoreForm= new Form("HighScore");
         highScoreForm.addCommand(backCmd);
         shareHighScoreCmd = new Command("Share", Command.ITEM, 2);
-        if(platform == 2)
+        if(platform == 2 && sharingEnabled)
         	highScoreForm.addCommand(shareHighScoreCmd);
         highScoreForm.setCommandListener(new CommandListener() {
             public void commandAction(Command c, Displayable s) {
